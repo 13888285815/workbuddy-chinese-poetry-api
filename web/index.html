@@ -393,30 +393,94 @@
       margin: 2px;
     }
 
+    /* 移动端侧边栏切换按钮 */
+    .mobile-sidebar-toggle {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Toast 通知 */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #333;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* 响应式 */
     @media (max-width: 768px) {
-      .sidebar {
-        display: none;
+      .mobile-sidebar-toggle {
+        display: block;
       }
-      
+
+      .sidebar {
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        width: 280px;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        display: block !important;
+        padding-top: 60px;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
       .header {
         flex-wrap: wrap;
         padding: 12px 16px;
       }
-      
+
       .header-search {
         order: 3;
         width: 100%;
         margin-top: 12px;
       }
-      
+
       .poem-grid {
         grid-template-columns: 1fr;
+      }
+
+      .toast {
+        bottom: 80px;
+        right: 16px;
+        left: 16px;
+        text-align: center;
       }
     }
   </style>
 </head>
 <body>
+  <!-- 移动端侧边栏切换 -->
+  <button class="mobile-sidebar-toggle" onclick="toggleMobileSidebar()">☰ 分类</button>
+
   <!-- 顶部功能区 -->
   <header class="header">
     <div class="logo">📜</div>
@@ -425,15 +489,15 @@
       <input type="text" class="search-input" id="searchInput" placeholder="搜索诗词、作者、内容...">
       <select class="btn" id="dynastySelect" style="background: rgba(255,255,255,0.95); color: #333;">
         <option value="">全部朝代</option>
-        <option value="唐">唐代</option>
-        <option value="宋">宋代</option>
-        <option value="元">元代</option>
-        <option value="清">清代</option>
-        <option value="先秦">先秦</option>
-        <option value="魏晋">魏晋</option>
-        <option value="五代">五代</option>
-        <option value="近现代">近现代</option>
-        <option value="南北朝">南北朝</option>
+        <option value="唐">唐代 (52)</option>
+        <option value="宋">宋代 (28)</option>
+        <option value="元">元代 (5)</option>
+        <option value="魏晋">魏晋 (3)</option>
+        <option value="清">清代 (2)</option>
+        <option value="先秦">先秦 (2)</option>
+        <option value="近现代">近现代 (6)</option>
+        <option value="五代">五代 (1)</option>
+        <option value="南北朝">南北朝 (1)</option>
       </select>
     </div>
     <div class="header-actions">
@@ -926,6 +990,26 @@
       }
     }
 
+    // 显示 Toast 通知
+    function showToast(message) {
+      let toast = document.querySelector('.toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.className = 'toast';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    // 移动端侧边栏切换
+    function toggleMobileSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('open');
+    }
+
     // 复制诗词
     function copyPoem(id) {
       const poem = samplePoems.find(p => p.id === id);
@@ -934,7 +1018,7 @@
       const text = `${poem.title}\n${poem.author}\n\n${poem.content}`;
       try {
         navigator.clipboard.writeText(text).then(() => {
-          alert('已复制到剪贴板！');
+          showToast('✅ 已复制到剪贴板');
         }).catch(() => {
           fallbackCopy(text);
         });
@@ -953,9 +1037,9 @@
       textarea.select();
       try {
         document.execCommand('copy');
-        alert('已复制到剪贴板！');
+        showToast('✅ 已复制到剪贴板');
       } catch (e) {
-        prompt('请手动复制：', text);
+        showToast('复制失败，请长按选择复制');
       }
       document.body.removeChild(textarea);
     }
