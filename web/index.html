@@ -450,9 +450,9 @@
         <div class="tree-header" onclick="toggleTree(this)">
           <div class="tree-icon">📂</div>
           <div class="tree-label">按朝代</div>
-          <div class="tree-count">6</div>
+          <div class="tree-count" id="dynastyCount">6</div>
         </div>
-        <div class="tree-children">
+        <div class="tree-children" id="dynastyTree">
           <div class="tree-header" onclick="filterByDynasty('唐')">
             <div class="tree-icon">📄</div>
             <div class="tree-label">唐代</div>
@@ -491,9 +491,9 @@
         <div class="tree-header" onclick="toggleTree(this)">
           <div class="tree-icon">📂</div>
           <div class="tree-label">按类型</div>
-          <div class="tree-count">3</div>
+          <div class="tree-count" id="typeCount">3</div>
         </div>
-        <div class="tree-children">
+        <div class="tree-children" id="typeTree">
           <div class="tree-header" onclick="filterByType('诗')">
             <div class="tree-icon">📄</div>
             <div class="tree-label">诗</div>
@@ -517,74 +517,10 @@
         <div class="tree-header" onclick="toggleTree(this)">
           <div class="tree-icon">📂</div>
           <div class="tree-label">按作者</div>
-          <div class="tree-count">13</div>
+          <div class="tree-count" id="authorCount">0</div>
         </div>
-        <div class="tree-children">
-          <div class="tree-header" onclick="filterByAuthor('李白')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">李白</div>
-            <div class="tree-count">3</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('杜甫')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">杜甫</div>
-            <div class="tree-count">1</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('苏轼')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">苏轼</div>
-            <div class="tree-count">2</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('李清照')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">李清照</div>
-            <div class="tree-count">1</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('王维')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">王维</div>
-            <div class="tree-count">2</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('孟浩然')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">孟浩然</div>
-            <div class="tree-count">1</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('岳飞')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">岳飞</div>
-            <div class="tree-count">1</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('鲁迅')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">鲁迅</div>
-            <div class="tree-count">1</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('徐志摩')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">徐志摩</div>
-            <div class="tree-count">1</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('戴望舒')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">戴望舒</div>
-            <div class="tree-count">1</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('艾青')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">艾青</div>
-            <div class="tree-count">1</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('余光中')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">余光中</div>
-            <div class="tree-count">1</div>
-          </div>
-          <div class="tree-header" onclick="filterByAuthor('海子')">
-            <div class="tree-icon">👤</div>
-            <div class="tree-label">海子</div>
-            <div class="tree-count">1</div>
-          </div>
+        <div class="tree-children" id="authorTree">
+          <!-- 作者节点将动态生成 -->
         </div>
       </div>
 
@@ -616,36 +552,114 @@
   </div>
 
   <script>
-    // 示例诗词数据
-    const samplePoems = [
-      { id: 1, title: "静夜思", author: "李白", dynasty: "唐", type: "五言绝句", content: "床前明月光，疑是地上霜。\n举头望明月，低头思故乡。" },
-      { id: 2, title: "春晓", author: "孟浩然", dynasty: "唐", type: "五言绝句", content: "春眠不觉晓，处处闻啼鸟。\n夜来风雨声，花落知多少。" },
-      { id: 3, title: "登鹳雀楼", author: "王之涣", dynasty: "唐", type: "五言绝句", content: "白日依山尽，黄河入海流。\n欲穷千里目，更上一层楼。" },
-      { id: 4, title: "悯农", author: "李绅", dynasty: "唐", type: "五言绝句", content: "锄禾日当午，汗滴禾下土。\n谁知盘中餐，粒粒皆辛苦。" },
-      { id: 5, title: "江雪", author: "柳宗元", dynasty: "唐", type: "五言绝句", content: "千山鸟飞绝，万径人踪灭。\n孤舟蓑笠翁，独钓寒江雪。" },
-      { id: 6, title: "相思", author: "王维", dynasty: "唐", type: "五言绝句", content: "红豆生南国，春来发几枝。\n愿君多采撷，此物最相思。" },
-      { id: 7, title: "鹿柴", author: "王维", dynasty: "唐", type: "五言绝句", content: "空山不见人，但闻人语响。\n返景入深林，复照青苔上。" },
-      { id: 8, title: "望庐山瀑布", author: "李白", dynasty: "唐", type: "七言绝句", content: "日照香炉生紫烟，遥看瀑布挂前川。\n飞流直下三千尺，疑是银河落九天。" },
-      { id: 9, title: "黄鹤楼送孟浩然之广陵", author: "李白", dynasty: "唐", type: "七言绝句", content: "故人西辞黄鹤楼，烟花三月下扬州。\n孤帆远影碧空尽，唯见长江天际流。" },
-      { id: 10, title: "绝句", author: "杜甫", dynasty: "唐", type: "七言绝句", content: "两个黄鹂鸣翠柳，一行白鹭上青天。\n窗含西岭千秋雪，门泊东吴万里船。" },
-      { id: 11, title: "水调歌头", author: "苏轼", dynasty: "宋", type: "词", content: "明月几时有？把酒问青天。\n不知天上宫阙，今夕是何年？\n我欲乘风归去，又恐琼楼玉宇，高处不胜寒。\n起舞弄清影，何似在人间。\n\n转朱阁，低绮户，照无眠。\n不应有恨，何事长向别时圆？\n人有悲欢离合，月有阴晴圆缺，此事古难全。\n但愿人长久，千里共婵娟。" },
-      { id: 12, title: "念奴娇·赤壁怀古", author: "苏轼", dynasty: "宋", type: "词", content: "大江东去，浪淘尽，千古风流人物。\n故垒西边，人道是，三国周郎赤壁。\n乱石穿空，惊涛拍岸，卷起千堆雪。\n江山如画，一时多少豪杰。\n\n遥想公瑾当年，小乔初嫁了，雄姿英发。\n羽扇纶巾，谈笑间，樯橹灰飞烟灭。\n故国神游，多情应笑我，早生华发。\n人生如梦，一尊还酹江月。" },
-      { id: 13, title: "满江红", author: "岳飞", dynasty: "宋", type: "词", content: "怒发冲冠，凭栏处、潇潇雨歇。\n抬望眼，仰天长啸，壮怀激烈。\n三十功名尘与土，八千里路云和月。\n莫等闲、白了少年头，空悲切！\n\n靖康耻，犹未雪。臣子恨，何时灭！\n驾长车，踏破贺兰山缺。\n壮志饥餐胡虏肉，笑谈渴饮匈奴血。\n待从头、收拾旧山河，朝天阙。" },
-      { id: 14, title: "声声慢", author: "李清照", dynasty: "宋", type: "词", content: "寻寻觅觅，冷冷清清，凄凄惨惨戚戚。\n乍暖还寒时候，最难将息。\n三杯两盏淡酒，怎敌他、晚来风急！\n雁过也，正伤心，却是旧时相识。\n\n满地黄花堆积，憔悴损，如今有谁堪摘？\n守着窗儿，独自怎生得黑！\n梧桐更兼细雨，到黄昏、点点滴滴。\n这次第，怎一个愁字了得！" },
-      { id: 15, title: "天净沙·秋思", author: "马致远", dynasty: "元", type: "曲", content: "枯藤老树昏鸦，\n小桥流水人家，\n古道西风瘦马。\n夕阳西下，\n断肠人在天涯。" },
-      { id: 16, title: "山坡羊·潼关怀古", author: "张养浩", dynasty: "元", type: "曲", content: "峰峦如聚，波涛如怒，\n山河表里潼关路。\n望西都，意踌躇。\n伤心秦汉经行处，\n宫阙万间都做了土。\n兴，百姓苦；\n亡，百姓苦。" },
-      // 近现代诗文
-      { id: 17, title: "自嘲", author: "鲁迅", dynasty: "近现代", type: "诗", content: "运交华盖欲何求，未敢翻身已碰头。\n破帽遮颜过闹市，漏船载酒泛中流。\n横眉冷对千夫指，俯首甘为孺子牛。\n躲进小楼成一统，管他冬夏与春秋。" },
-      { id: 18, title: "再别康桥", author: "徐志摩", dynasty: "近现代", type: "诗", content: "轻轻的我走了，\n正如我轻轻的来；\n我轻轻的招手，\n作别西天的云彩。\n\n那河畔的金柳，\n是夕阳中的新娘；\n波光里的艳影，\n在我的心头荡漾。\n\n软泥上的青荇，\n油油的在水底招摇；\n在康河的柔波里，\n我甘心做一条水草！\n\n那榆荫下的一潭，\n不是清泉，是天上虹；\n揉碎在浮藻间，\n沉淀着彩虹似的梦。\n\n寻梦？撑一支长篙，\n向青草更青处漫溯；\n满载一船星辉，\n在星辉斑斓里放歌。\n\n但我不能放歌，\n悄悄是别离的笙箫；\n夏虫也为我沉默，\n沉默是今晚的康桥！\n\n悄悄的我走了，\n正如我悄悄的来；\n我挥一挥衣袖，\n不带走一片云彩。" },
-      { id: 19, title: "雨巷", author: "戴望舒", dynasty: "近现代", type: "诗", content: "撑着油纸伞，独自\n彷徨在悠长、悠长\n又寂寥的雨巷，\n我希望逢着\n一个丁香一样的\n结着愁怨的姑娘。\n\n她是有\n丁香一样的颜色，\n丁香一样的芬芳，\n丁香一样的忧愁，\n在雨中哀怨，\n哀怨又彷徨；\n\n她彷徨在这寂寥的雨巷，\n撑着油纸伞\n像我一样，\n像我一样地\n默默行着，\n冷漠，凄清，又惆怅。\n\n她静默地走近\n走近，又投出\n太息一般的眼光，\n她飘过\n像梦一般的，\n像梦一般的凄婉迷茫。\n\n像梦中飘过\n一枝丁香的，\n我身旁飘过这女郎；\n她静默地远了，远了，\n到了颓圮的篱墙，\n走尽这雨巷。\n\n在雨的哀曲里，\n消了她的颜色，\n散了她的芬芳，\n消散了，甚至她的\n太息般的眼光，\n丁香般的惆怅。\n\n撑着油纸伞，独自\n彷徨在悠长、悠长\n又寂寥的雨巷，\n我希望飘过\n一个丁香一样的\n结着愁怨的姑娘。" },
-      { id: 20, title: "我爱这土地", author: "艾青", dynasty: "近现代", type: "诗", content: "假如我是一只鸟，\n我也应该用嘶哑的喉咙歌唱：\n这被暴风雨所打击着的土地，\n这永远汹涌着我们的悲愤的河流，\n这无止息地吹刮着的激怒的风，\n和那来自林间的无比温柔的黎明……\n——然后我死了，\n连羽毛也腐烂在土地里面。\n\n为什么我的眼里常含泪水？\n因为我对这土地爱得深沉……" },
-      { id: 21, title: "乡愁", author: "余光中", dynasty: "近现代", type: "诗", content: "小时候\n乡愁是一枚小小的邮票\n我在这头\n母亲在那头\n\n长大后\n乡愁是一张窄窄的船票\n我在这头\n新娘在那头\n\n后来啊\n乡愁是一方矮矮的坟墓\n我在外头\n母亲在里头\n\n而现在\n乡愁是一湾浅浅的海峡\n我在这头\n大陆在那头" },
-      { id: 22, title: "面朝大海，春暖花开", author: "海子", dynasty: "近现代", type: "诗", content: "从明天起，做一个幸福的人\n喂马、劈柴，周游世界\n从明天起，关心粮食和蔬菜\n我有一所房子，面朝大海，春暖花开\n\n从明天起，和每一个亲人通信\n告诉他们我的幸福\n那幸福的闪电告诉我的\n我将告诉每一个人\n\n给每一条河每一座山取一个温暖的名字\n陌生人，我也为你祝福\n愿你有一个灿烂的前程\n愿你有情人终成眷属\n愿你在尘世获得幸福\n我只愿面朝大海，春暖花开" }
-    ];
-
+    // 从 JSON 文件加载诗文数据
+    let samplePoems = [];
     let currentPoems = [];
     let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
     let currentFilter = { type: 'all', value: '' };
+
+    // 加载诗文数据
+    async function loadPoems() {
+      try {
+        const response = await fetch('poems.json');
+        samplePoems = await response.json();
+        console.log(`✅ 成功加载 ${samplePoems.length} 首诗文`);
+        updateTreeStructure();
+        showAll();
+      } catch (error) {
+        console.error('❌ 加载诗文数据失败:', error);
+        alert('加载诗文数据失败，请检查 poems.json 文件是否存在');
+      }
+    }
+
+    // 动态更新树形结构
+    function updateTreeStructure() {
+      // 统计数据
+      const dynasties = {};
+      const types = {};
+      const authors = {};
+
+      samplePoems.forEach(poem => {
+        dynasties[poem.dynasty] = (dynasties[poem.dynasty] || 0) + 1;
+        types[poem.type] = (types[poem.type] || 0) + 1;
+        authors[poem.author] = (authors[poem.author] || 0) + 1;
+      });
+
+      // 更新朝代树
+      updateDynastyTree(dynasties);
+
+      // 更新类型树
+      updateTypeTree(types);
+
+      // 更新作者树
+      updateAuthorTree(authors);
+
+      // 更新全部诗文数量
+      document.querySelector('.tree-header[onclick="showAll()"] .tree-count').textContent = samplePoems.length;
+    }
+
+    // 更新朝代树
+    function updateDynastyTree(dynasties) {
+      const dynastyTree = document.getElementById('dynastyTree');
+      const dynastyHeaders = dynastyTree.querySelectorAll('.tree-header');
+      
+      const dynastyOrder = ['唐', '宋', '元', '明', '清', '近现代'];
+      dynastyHeaders.forEach((header, index) => {
+        if (index < dynastyOrder.length) {
+          const dynasty = dynastyOrder[index];
+          const count = dynasties[dynasty] || 0;
+          header.querySelector('.tree-count').textContent = count;
+        }
+      });
+
+      // 更新朝代分类总数
+      document.getElementById('dynastyCount').textContent = Object.keys(dynasties).length;
+    }
+
+    // 更新类型树
+    function updateTypeTree(types) {
+      const typeTree = document.getElementById('typeTree');
+      const typeHeaders = typeTree.querySelectorAll('.tree-header');
+      
+      const typeOrder = ['诗', '词', '曲'];
+      typeHeaders.forEach((header, index) => {
+        if (index < typeOrder.length) {
+          const type = typeOrder[index];
+          const count = types[type] || 0;
+          header.querySelector('.tree-count').textContent = count;
+        }
+      });
+
+      // 更新类型分类总数
+      document.getElementById('typeCount').textContent = Object.keys(types).length;
+    }
+
+    // 更新作者树
+    function updateAuthorTree(authors) {
+      const authorTree = document.getElementById('authorTree');
+      
+      // 清空现有作者节点
+      authorTree.innerHTML = '';
+
+      // 按作者名排序
+      const sortedAuthors = Object.entries(authors).sort((a, b) => a[0].localeCompare(b[0]));
+
+      // 生成作者节点
+      sortedAuthors.forEach(([author, count]) => {
+        const authorNode = document.createElement('div');
+        authorNode.className = 'tree-header';
+        authorNode.onclick = () => filterByAuthor(author);
+        authorNode.innerHTML = `
+          <div class="tree-icon">👤</div>
+          <div class="tree-label">${author}</div>
+          <div class="tree-count">${count}</div>
+        `;
+        authorTree.appendChild(authorNode);
+      });
+
+      // 更新作者分类总数
+      document.getElementById('authorCount').textContent = Object.keys(authors).length;
+    }
 
     // 更新收藏数量
     function updateFavoriteCount() {
@@ -910,7 +924,9 @@
     // 初始化
     document.addEventListener('DOMContentLoaded', () => {
       updateFavoriteCount();
-      showAll();
+      
+      // 加载诗文数据
+      loadPoems();
 
       // 搜索框回车事件
       document.getElementById('searchInput').addEventListener('keypress', (e) => {
