@@ -428,8 +428,10 @@
         <option value="唐">唐代</option>
         <option value="宋">宋代</option>
         <option value="元">元代</option>
-        <option value="明">明代</option>
         <option value="清">清代</option>
+        <option value="先秦">先秦</option>
+        <option value="魏晋">魏晋</option>
+        <option value="五代">五代</option>
         <option value="近现代">近现代</option>
       </select>
     </div>
@@ -446,13 +448,13 @@
       <div class="sidebar-title">📚 诗文分类</div>
       
       <!-- 按朝代分类 -->
-      <div class="tree-item">
+      <div class="tree-item tree-expanded">
         <div class="tree-header" onclick="toggleTree(this)">
           <div class="tree-icon">📂</div>
           <div class="tree-label">按朝代</div>
-          <div class="tree-count" id="dynastyCount">6</div>
+          <div class="tree-count" id="dynastyCount">0</div>
         </div>
-        <div class="tree-children" id="dynastyTree">
+        <div class="tree-children expanded" id="dynastyTree">
           <div class="tree-header" onclick="filterByDynasty('唐')">
             <div class="tree-icon">📄</div>
             <div class="tree-label">唐代</div>
@@ -468,58 +470,54 @@
             <div class="tree-label">元代</div>
             <div class="tree-count">2</div>
           </div>
-          <div class="tree-header" onclick="filterByDynasty('明')">
-            <div class="tree-icon">📄</div>
-            <div class="tree-label">明代</div>
-            <div class="tree-count">0</div>
-          </div>
           <div class="tree-header" onclick="filterByDynasty('清')">
             <div class="tree-icon">📄</div>
             <div class="tree-label">清代</div>
-            <div class="tree-count">0</div>
+            <div class="tree-count">2</div>
           </div>
           <div class="tree-header" onclick="filterByDynasty('近现代')">
             <div class="tree-icon">📄</div>
             <div class="tree-label">近现代</div>
             <div class="tree-count">6</div>
           </div>
+          <div class="tree-header" onclick="filterByDynasty('先秦')">
+            <div class="tree-icon">📄</div>
+            <div class="tree-label">先秦</div>
+            <div class="tree-count">2</div>
+          </div>
+          <div class="tree-header" onclick="filterByDynasty('魏晋')">
+            <div class="tree-icon">📄</div>
+            <div class="tree-label">魏晋</div>
+            <div class="tree-count">2</div>
+          </div>
+          <div class="tree-header" onclick="filterByDynasty('五代')">
+            <div class="tree-icon">📄</div>
+            <div class="tree-label">五代</div>
+            <div class="tree-count">1</div>
+          </div>
         </div>
       </div>
 
       <!-- 按类型分类 -->
-      <div class="tree-item">
+      <div class="tree-item tree-expanded">
         <div class="tree-header" onclick="toggleTree(this)">
           <div class="tree-icon">📂</div>
           <div class="tree-label">按类型</div>
-          <div class="tree-count" id="typeCount">3</div>
+          <div class="tree-count" id="typeCount">0</div>
         </div>
-        <div class="tree-children" id="typeTree">
-          <div class="tree-header" onclick="filterByType('诗')">
-            <div class="tree-icon">📄</div>
-            <div class="tree-label">诗</div>
-            <div class="tree-count">16</div>
-          </div>
-          <div class="tree-header" onclick="filterByType('词')">
-            <div class="tree-icon">📄</div>
-            <div class="tree-label">词</div>
-            <div class="tree-count">4</div>
-          </div>
-          <div class="tree-header" onclick="filterByType('曲')">
-            <div class="tree-icon">📄</div>
-            <div class="tree-label">曲</div>
-            <div class="tree-count">2</div>
-          </div>
+        <div class="tree-children expanded" id="typeTree">
+          <!-- 类型节点将在 JS 中动态生成 -->
         </div>
       </div>
 
       <!-- 按作者分类 -->
-      <div class="tree-item">
+      <div class="tree-item tree-expanded">
         <div class="tree-header" onclick="toggleTree(this)">
           <div class="tree-icon">📂</div>
           <div class="tree-label">按作者</div>
           <div class="tree-count" id="authorCount">0</div>
         </div>
-        <div class="tree-children" id="authorTree">
+        <div class="tree-children expanded" id="authorTree">
           <!-- 作者节点将动态生成 -->
         </div>
       </div>
@@ -530,7 +528,7 @@
         <div class="tree-header active" onclick="showAll()">
           <div class="tree-icon">📄</div>
           <div class="tree-label">全部诗文</div>
-          <div class="tree-count">22</div>
+          <div class="tree-count" id="allPoemCount">0</div>
         </div>
       </div>
       <div class="tree-item">
@@ -601,15 +599,19 @@
     // 更新朝代树
     function updateDynastyTree(dynasties) {
       const dynastyTree = document.getElementById('dynastyTree');
-      const dynastyHeaders = dynastyTree.querySelectorAll('.tree-header');
       
-      const dynastyOrder = ['唐', '宋', '元', '明', '清', '近现代'];
-      dynastyHeaders.forEach((header, index) => {
-        if (index < dynastyOrder.length) {
-          const dynasty = dynastyOrder[index];
-          const count = dynasties[dynasty] || 0;
-          header.querySelector('.tree-count').textContent = count;
-        }
+      // 清空并重新生成
+      dynastyTree.innerHTML = '';
+
+      const dynastyOrder = ['唐', '宋', '元', '明', '清', '近现代', '先秦', '魏晋', '南北朝', '五代'];
+      dynastyOrder.forEach(dynasty => {
+        const count = dynasties[dynasty] || 0;
+        if (count === 0) return; // 跳过空朝代
+        const node = document.createElement('div');
+        node.className = 'tree-header';
+        node.onclick = () => filterByDynasty(dynasty);
+        node.innerHTML = `<div class="tree-icon">📄</div><div class="tree-label">${dynasty}</div><div class="tree-count">${count}</div>`;
+        dynastyTree.appendChild(node);
       });
 
       // 更新朝代分类总数
@@ -619,15 +621,19 @@
     // 更新类型树
     function updateTypeTree(types) {
       const typeTree = document.getElementById('typeTree');
-      const typeHeaders = typeTree.querySelectorAll('.tree-header');
       
-      const typeOrder = ['诗', '词', '曲'];
-      typeHeaders.forEach((header, index) => {
-        if (index < typeOrder.length) {
-          const type = typeOrder[index];
-          const count = types[type] || 0;
-          header.querySelector('.tree-count').textContent = count;
-        }
+      // 清空并重新生成
+      typeTree.innerHTML = '';
+
+      const typeOrder = ['五言绝句', '七言绝句', '五言律诗', '七言律诗', '词', '曲', '乐府诗', '诗经', '五言古诗', '诗'];
+      typeOrder.forEach(type => {
+        const count = types[type] || 0;
+        if (count === 0) return;
+        const node = document.createElement('div');
+        node.className = 'tree-header';
+        node.onclick = () => filterByType(type);
+        node.innerHTML = `<div class="tree-icon">📄</div><div class="tree-label">${type}</div><div class="tree-count">${count}</div>`;
+        typeTree.appendChild(node);
       });
 
       // 更新类型分类总数
@@ -666,6 +672,14 @@
       document.getElementById('favoriteCount').textContent = favorites.length;
     }
 
+    // 搜索高亮
+    function highlightText(text, query) {
+      if (!query) return text;
+      const q = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp('(' + q + ')', 'gi');
+      return text.replace(regex, '<mark style="background:#fef08a;padding:0 2px;border-radius:2px">$1</mark>');
+    }
+
     // 显示加载状态
     function showLoading() {
       document.getElementById('mainContent').innerHTML = `
@@ -693,6 +707,8 @@
         return;
       }
 
+      const query = document.getElementById('searchInput').value.trim();
+
       const html = `
         <div class="content-header">
           <div class="content-title">${title} (${poems.length}首)</div>
@@ -704,17 +720,17 @@
           ${poems.map(poem => `
             <div class="poem-card" onclick="showDetail(${poem.id})">
               <div class="poem-card-header">
-                <div class="poem-title">${poem.title}</div>
+                <div class="poem-title">${query ? highlightText(poem.title, query) : poem.title}</div>
                 <div class="poem-favorite ${favorites.includes(poem.id) ? 'active' : ''}" 
                      onclick="event.stopPropagation(); toggleFavorite(${poem.id})">
                   ${favorites.includes(poem.id) ? '❤️' : '🤍'}
                 </div>
               </div>
               <div class="poem-meta">
-                <span>👤 ${poem.author}</span>
+                <span>👤 ${query ? highlightText(poem.author, query) : poem.author}</span>
                 <span>📅 ${poem.dynasty}</span>
               </div>
-              <div class="poem-preview">${poem.content.substring(0, 60)}...</div>
+              <div class="poem-preview">${query ? highlightText(poem.content.substring(0, 80), query) : poem.content.substring(0, 60)}...</div>
             </div>
           `).join('')}
         </div>
@@ -770,7 +786,7 @@
       if (children && children.classList.contains('tree-children')) {
         children.classList.toggle('expanded');
         const icon = element.querySelector('.tree-icon');
-        icon.textContent = children.classList.contains('expanded') ? '📂' : '📂';
+        icon.textContent = children.classList.contains('expanded') ? '📂' : '📁';
       }
     }
 
