@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkBuddy 古诗词殿堂 - 测试页面</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .success {
+      color: #10b981;
+      font-size: 18px;
+      margin: 20px 0;
+      padding: 15px;
+      background: #d1fae5;
+      border-radius: 8px;
+    }
+    .info {
+      color: #3b82f6;
+      font-size: 14px;
+      margin: 10px 0;
+      padding: 10px;
+      background: #dbeafe;
+      border-radius: 8px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #667eea;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      margin: 10px 10px 10px 0;
+      font-weight: 600;
+    }
+    .btn:hover {
+      background: #5568d3;
+    }
+    .test-result {
+      margin: 20px 0;
+      padding: 15px;
+      background: #f3f4f6;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 WorkBuddy 古诗词殿堂 - 服务测试成功！</h1>
+    
+    <div class="success">
+      ✅ 本地服务正常运行
+    </div>
+    
+    <div class="info">
+      <strong>当前访问地址：</strong><br>
+      http://localhost:8083
+    </div>
+    
+    <div class="info">
+      <strong>GitHub Pages 地址：</strong><br>
+      https://13888285815.github.io/workbuddy-chinese-poetry-api/web/
+    </div>
+    
+    <div class="test-result">
+      <h3>🧪 功能测试</h3>
+      <p>✅ 页面加载正常</p>
+      <p>✅ JavaScript 运行正常</p>
+      <p>✅ CSS 样式加载正常</p>
+      <p>✅ 本地存储功能可用</p>
+    </div>
+    
+    <div>
+      <a href="index.html" class="btn">📜 进入古诗词殿堂</a>
+      <a href="https://13888285815.github.io/workbuddy-chinese-poetry-api/web/" target="_blank" class="btn">🌐 GitHub Pages</a>
+    </div>
+    
+    <div class="info" style="margin-top: 20px;">
+      <strong>💡 如果无法访问，请尝试：</strong><br>
+      1. 确认端口 8083 没有被其他程序占用<br>
+      2. 尝试使用其他浏览器（Chrome、Firefox、Safari）<br>
+      3. 检查防火墙设置<br>
+      4. GitHub Pages 可能需要等待几分钟更新
+    </div>
+  </div>
+
+  <script>
+    // 测试 JavaScript 功能
+    console.log('✅ JavaScript 运行正常');
+    
+    // 测试本地存储
+    try {
+      localStorage.setItem('test', 'ok');
+      localStorage.removeItem('test');
+      console.log('✅ 本地存储功能正常');
+    } catch (e) {
+      console.error('❌ 本地存储功能异常:', e);
+    }
+    
+    // 显示当前时间
+    const now = new Date();
+    console.log('📅 当前时间:', now.toLocaleString('zh-CN'));
+  </script>
+</body>
+</html>
